@@ -6,5 +6,5 @@ This project provides a Python websocket based extension for OMNeT++ that enable
 * ...
 
 ## Related projects
-[OMNeT++](https://omnetpp.org/)
-[Artery](https://omnetpp.org/download-items/Artery.html)
+* [OMNeT++](https://omnetpp.org/)
+* [Artery](https://omnetpp.org/download-items/Artery.html)
