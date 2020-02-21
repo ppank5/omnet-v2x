@@ -1,1 +1,10 @@
-# omnet-v2x
+# MATLAB-based V2X PHY/MAC extension for OMNeT++
+
+This project provides a Python websocket based extension for OMNeT++ that enables to execute MATLAB scripts.
+
+## Dependencies
+* ...
+
+## Related projects
+[OMNeT++](https://omnetpp.org/)
+[Artery](ttps://omnetpp.org/download-items/Artery.html)
