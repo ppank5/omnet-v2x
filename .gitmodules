@@ -1,0 +1,3 @@
+[submodule "external/ubx-v2x"]
+	path = external/ubx-v2x
+	url = https://github.com/u-blox/ubx-v2x.git
