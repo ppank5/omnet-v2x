@@ -13,7 +13,7 @@ async def hello(websocket, path):
     age = z["age"]
     city = z["city"]
 
-    greeting = f"Hello {name}, aged {age} living in {city}! Welcome here"
+    greeting = f"Hello {name}, aged {age} living in {city}!"
 
     await websocket.send(greeting)
     print(f"> {greeting}")
