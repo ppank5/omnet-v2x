@@ -37,6 +37,7 @@ async def hello(websocket, path):
     # transmissionChannel - IIeee80211Channel pointer type, needs more investigation
     #
 
+    print(eng.doubler(2))
     await websocket.send(message)
 
 
