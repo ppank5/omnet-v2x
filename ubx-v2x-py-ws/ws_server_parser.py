@@ -2,17 +2,28 @@
 # WS server example
 
 import asyncio
-import websockets
 import json
+
+import websockets
 import matlab.engine
 
+eng = matlab.engine.start_matlab()
 
 async def hello(websocket, path):
+
     raw = await websocket.recv()
     data = json.loads(raw)
 
     headerBitLength = data["headerBitLength"]
     payloadBitLength = data["payloadBitLength"]
+    transmissionPower = data["transmissionPower"]
+    transmissionBitrate = data["transmissionBitrate"]
+    startOrientation = data["startOrientation"]
+    endOrientation = data["endOrientation"]
+    startPosition = data["startPosition"]
+    endPosition = data["endPosition"]
+
+
 
     #
     # transmitter - IRadio pointer type, needs more investigation
@@ -22,10 +33,10 @@ async def hello(websocket, path):
     # preambleDuration - simtime_t type, needs PARSE
     # headerDuration - simtime_t type, needs PARSE
     # dataDuration - simtime_t type, needs PARSE
-    # startPosition - Coord type, needs PARSE
-    # endPosition - Coord type, needs PARSE
-    # startOrientation - EulerAngles type, needs PARSE
-    # endOrientation - EulerAngles type, needs PARSE
+    # startPosition - Coord type, has 3 double var (x, y, z)
+    # endPosition - Coord type, has 3 double var (x, y, z)
+    # startOrientation - EulerAngles type, has 3 double var (alpha, beta, gamma)
+    # endOrientation - EulerAngles type, has 3 double var (alpha, beta, gamma)
     # modulation - UNKNOWN
     # headerBitLength - int type, DONE
     # payloadBitLength - int type, DONE
@@ -35,15 +46,16 @@ async def hello(websocket, path):
     # transmissionPower - W type, needs PARSE
     # transmissionMode - IIeee80211Mode pointer type, needs more investigation
     # transmissionChannel - IIeee80211Channel pointer type, needs more investigation
-    #
+
+    message = "OK"
 
     print(eng.doubler(2))
+
     await websocket.send(message)
 
-
-eng = matlab.engine.start_matlab()
 
 start_server = websockets.serve(hello, "localhost", 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+
