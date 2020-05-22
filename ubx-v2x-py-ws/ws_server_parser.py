@@ -1,6 +1,3 @@
-
-# WS server example
-
 import asyncio
 import json
 import websockets
@@ -17,10 +14,9 @@ async def comm(websocket, path):
 
     coord_a = matlab.double([data["coord_a_x"], data["coord_a_y"]])
     coord_b = matlab.double([data["coord_b_x"], data["coord_b_y"]])
-    payload_len = data["payload_len"]
+    payload_len = matlab.double([data["payload_len"]])
 
-    output = eng.distance_calc(coord_a, coord_b)
-    print(output)
+    result = eng.batch_sim(coord_a, coord_b, payload_len)
 
     #
     # transmitter - IRadio pointer type, needs more investigation
@@ -44,10 +40,11 @@ async def comm(websocket, path):
     # transmissionMode - IIeee80211Mode pointer type, needs more investigation
     # transmissionChannel - IIeee80211Channel pointer type, needs more investigation
 
-    x = {"result": output}
+    x = {"result": result}
     message = json.dumps(x)
 
     await websocket.send(message)
+    print(message)
 
 start_server = websockets.serve(comm, "localhost", 8765)
 print("Server is running")
