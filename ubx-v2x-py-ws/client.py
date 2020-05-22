@@ -6,10 +6,10 @@ import json
 async def comm():
     uri = "ws://localhost:8765"
     async with websockets.connect(uri) as websocket:
-        coord_a_x = 1
-        coord_a_y = 2
-        coord_b_x = 4
-        coord_b_y = 6
+        coord_a_x = 47.536375
+        coord_a_y = 19.058221
+        coord_b_x = 47.524513
+        coord_b_y = 19.063365
         payload_len = 300
         x = {
             "coord_a_x": coord_a_x,
