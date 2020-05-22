@@ -10,7 +10,7 @@ async def comm():
         coord_a_y = 2
         coord_b_x = 4
         coord_b_y = 6
-        payload_len = 200
+        payload_len = 300
         x = {
             "coord_a_x": coord_a_x,
             "coord_a_y": coord_a_y,
