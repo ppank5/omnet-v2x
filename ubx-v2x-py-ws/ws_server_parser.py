@@ -3,52 +3,24 @@
 
 import asyncio
 import json
-
 import websockets
 import matlab.engine
 
 eng = matlab.engine.start_matlab()
+print("Matlab Engine has started")
 
+async def comm(websocket, path):
 
-coord_a = [2, 2]
-coord_b = [5, 6]
-payload_len = 58
-message = [coord_a, coord_b, payload_len]
+    raw = await websocket.recv()
 
-raw = json.dumps(message)
-data = json.loads(raw)
+    data = json.loads(raw)
 
-# data is a list.
-# [0] is coord_a,
-# [1] is coord_b,
-# [3] is payload_len
+    coord_a = matlab.double([data["coord_a_x"], data["coord_a_y"]])
+    coord_b = matlab.double([data["coord_b_x"], data["coord_b_y"]])
+    payload_len = data["payload_len"]
 
-o_coord_a = matlab.double(data[0])
-o_coord_b = matlab.double(data[1])
-o_payload_len = data[2]
-
-output = eng.distance_calc(o_coord_a, o_coord_b)
-
-print(output)
-
-
-
-async def hello(websocket, path):
-
-    aw = await websocket.recv()
-
-
-
-    headerBitLength = data["headerBitLength"]
-    payloadBitLength = data["payloadBitLength"]
-    transmissionPower = data["transmissionPower"]
-    transmissionBitrate = data["transmissionBitrate"]
-    startOrientation = data["startOrientation"]
-    endOrientation = data["endOrientation"]
-    startPosition = data["startPosition"]
-    endPosition = data["endPosition"]
-
-
+    output = eng.distance_calc(coord_a, coord_b)
+    print(output)
 
     #
     # transmitter - IRadio pointer type, needs more investigation
@@ -72,10 +44,13 @@ async def hello(websocket, path):
     # transmissionMode - IIeee80211Mode pointer type, needs more investigation
     # transmissionChannel - IIeee80211Channel pointer type, needs more investigation
 
-    await websocket.send()
+    x = {"result": output}
+    message = json.dumps(x)
 
-# start_server = websockets.serve(hello, "localhost", 8765)
+    await websocket.send(message)
 
-# asyncio.get_event_loop().run_until_complete(start_server)
-# asyncio.get_event_loop().run_forever()
+start_server = websockets.serve(comm, "localhost", 8765)
+print("Server is running")
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
 
