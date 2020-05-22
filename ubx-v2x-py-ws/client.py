@@ -3,24 +3,28 @@ import websockets
 import json
 
 
-async def hello():
+async def comm():
     uri = "ws://localhost:8765"
     async with websockets.connect(uri) as websocket:
-        name = input("What's your name? ")
-        age = input("How old are you? ")
-        city = input("Where do you live? ")
+        coord_a_x = 1
+        coord_a_y = 2
+        coord_b_x = 4
+        coord_b_y = 6
+        payload_len = 200
+        x = {
+            "coord_a_x": coord_a_x,
+            "coord_a_y": coord_a_y,
+            "coord_b_x": coord_b_x,
+            "coord_b_y": coord_b_y,
+            "payload_len": payload_len
+        }
 
-        x = {"name": name, "age": age, "city": city}
+        message = json.dumps(x)
 
-        y = json.dumps(x)
-        print(x)
-        print(y)
+        await websocket.send(message)
+        print(message)
 
-        await websocket.send(y)
-        print(f"> {y}")
+        response = await websocket.recv()
+        print (response)
 
-        greeting = await websocket.recv()
-        print(f"< {greeting}")
-
-
-asyncio.get_event_loop().run_until_complete(hello())
+asyncio.get_event_loop().run_until_complete(comm())
